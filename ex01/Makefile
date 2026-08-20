@@ -1,7 +1,7 @@
 NAME = RPN
 CXX = c++
 CFLAGS = -std=c++20 -Wall -Wextra -Werror
-SRCS = main.cpp
+SRCS = main.cpp RPN.cpp
 
 O_DIR = objects
 
