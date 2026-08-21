@@ -10,13 +10,19 @@
 class PmergeMe
 {
 	private:
-		std::vector<int>	_vec;
-		std::deque<int>		_deq;
-		size_t				_elements;
+		std::vector<int>	_vector;
+		std::deque<int>		_deque;
+		
 	public:
 		PmergeMe();
 		PmergeMe(const PmergeMe& orig);
 		PmergeMe&	operator=(const PmergeMe& orig);
 		~PmergeMe();
-		void	createJacobstahl();
+		void	parseInput(int argc, char **argv);
+		void	getJacobstahl();
+		void	processVec();
+		void	processDeq();
+		void	printVec(std::string text);
+		void	printDeq(std::string text);
+
 }
