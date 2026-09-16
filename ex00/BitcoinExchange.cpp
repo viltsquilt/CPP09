@@ -39,7 +39,7 @@ void	BitcoinExchange::loadRates()
 		std::string	date;
 		double	rate;
 		size_t	pos = line.find(',');
-		if (pos == std::npos)
+		if (pos == std::string::npos)
 		{
 			std::cerr << "missing comma on data.csv\n";
 			data.close();
@@ -60,7 +60,7 @@ void	BitcoinExchange::loadRates()
 		}
 		_data.insert({date, rate});
 	}
-	data.close;
+	data.close();
 }
 
 void	BitcoinExchange::convertBitcoinValue(std::string date, double value)
@@ -71,7 +71,7 @@ void	BitcoinExchange::convertBitcoinValue(std::string date, double value)
 		throw std::runtime_error("Error: bad input => " + date);
 	it--;
 	rate = it->second;
-	std::cout << date << " => " << val << " = " << rate * value << std::endl;
+	std::cout << date << " => " << value << " = " << rate * value << std::endl;
 }
 
 void	BitcoinExchange::processInputFile(const std::string &arg)
@@ -89,7 +89,7 @@ void	BitcoinExchange::processInputFile(const std::string &arg)
 		std::string	date;
 		double	rate;
 		size_t	pos = line.find('|');
-		if (pos == std::npos)
+		if (pos == std::string::npos)
 		{
 			std::cerr << "Error: bad input => " + line + "\n";
 			continue;
@@ -102,6 +102,8 @@ void	BitcoinExchange::processInputFile(const std::string &arg)
 			validDate(date);
 			rate = std::stod(line.substr(pos + 2));
 			validRate(rate);
+			if (rate > 1000)
+				throw std::runtime_error("Error: number too large");
 			convertBitcoinValue(date, rate);
 		}
 		catch (std::exception &e)
@@ -109,7 +111,7 @@ void	BitcoinExchange::processInputFile(const std::string &arg)
 			std::cerr << e.what() << "\n";
 		}
 	}
-	input.close;
+	file.close();
 
 }
 
@@ -117,15 +119,15 @@ void	BitcoinExchange::validRate(double rate)
 {
 	if (rate < 0)
 		throw std::runtime_error("Error: not a positive number");
-	if (rate > std::numeric_limits<double>::max)
+	if (rate > std::numeric_limits<double>::max())
 		throw std::runtime_error("Error: number too large");
 
 }
 
 void	BitcoinExchange::validDate(std::string date)
 {
-	std::regex	regex("\\d{4}\\-\\d{2}\\-\\d{2}\\");
-	if(std::regex_match(date, regex))
+	std::regex	regex("\\d{4}\\-\\d{2}\\-\\d{2}");
+	if(!std::regex_match(date, regex))
 		throw std::runtime_error("Error: bad input => " + date);
 	int	year = stoi(date.substr(0, 4));
 	int	month = stoi(date.substr(5, 2));

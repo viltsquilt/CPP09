@@ -20,7 +20,7 @@ class BitcoinExchange
 		void	loadRates();
 		void	loadDates();
 		void	convertBitcoinValue(std::string date, double value);
-		void	processInputfile(const std::string &arg);
+		void	processInputFile(const std::string &arg);
 		void	validRate(double rate);
 		void	validDate(std::string date);
 };
